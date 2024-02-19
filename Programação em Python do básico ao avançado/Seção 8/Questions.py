@@ -74,9 +74,46 @@ def q10(a,b):
 
 def q11(tpe, *args):
 
-    if tpe == 'A' or 'a':
-        return sum(args)/len(args)
-    if tpe == 
+    if len(args) == 3:
+        if tpe == 'A' or tpe == 'a':
+            return sum(args)/len(args)  
+        elif tpe == 'P' or tpe == 'p':
+            a = 5*args[0] + 3*args[1] + 2*args[2]
+            return a/10
+        else:
+            print("Error")
+            return -1
+    else:
+        print("Error")
+        return -1
+    
+def q12(num):
+    if num<0:
+        print("Error")
+        return-1
+    else:
+        temp = [int(i) for i in str(num)]
+        return sum(temp)
+
+def q13(num1,num2,ope):
+    match ope:
+        case '+':
+            return num1 + num2
+        case '-':
+            return num1 - num2
+        case '/':
+            return num1/num2
+        case '*':
+            return num1*num2
+        
+
+def q14(dist,gaso):
+    km_l = dist/gaso
+
+    if km_l < 8:
+        print("Venda o Carro!")
+    if km_l > 12:
+
 
 # Test
-print(q9(1,1))
+print(q13(1,2,'/'))
