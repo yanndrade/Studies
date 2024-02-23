@@ -112,8 +112,13 @@ def q14(dist,gaso):
 
     if km_l < 8:
         print("Venda o Carro!")
-    if km_l > 12:
+    elif km_l > 12:
+        print("Super economico!")
+    else:
+        print("Economico!")
 
+
+def q15a():
 
 # Test
-print(q13(1,2,'/'))
+print(q14(4,1))
