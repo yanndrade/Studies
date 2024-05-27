@@ -73,12 +73,13 @@ def q10(a,b):
         return a
 
 def q11(tpe, *args):
+    a,b,c = args
 
     if len(args) == 3:
         if tpe == 'A' or tpe == 'a':
             return sum(args)/len(args)  
         elif tpe == 'P' or tpe == 'p':
-            a = 5*args[0] + 3*args[1] + 2*args[2]
+            a = 5*a + 3*b + 2*c
             return a/10
         else:
             print("Error")
@@ -118,7 +119,41 @@ def q14(dist,gaso):
         print("Economico!")
 
 
-def q15a():
+def q15(*args):
+    if len(args) == 3:
+        a,b,c = args
+        l = {a,b,c}
+        if (a!=0) & (b!=0) & (c!=0) & (a<b+c) & (b<a+c) & (c<b+a):
+            if len(l) == 1:
+                print("Equilateral triangle")
+            elif len(l) == 2:
+                print("Isosceles triangle")
+            else:
+                print("Scalene triangle")
+        else:
+            print("Its not a Triangle")
 
+    else:
+        print("3 values necessary!")
+        
+
+def q16(num):
+    print(num*'=')
+
+def q17(a,b):
+    if (a>0) & (b>0):
+        values = list(range(a+1,b))
+    else:
+        print("Erro: Only positive integers")
+        return -1
+    return sum(values)
+
+
+
+
+
+
+
+q73()
 # Test
-print(q14(4,1))
+print(q17(-1,5))
