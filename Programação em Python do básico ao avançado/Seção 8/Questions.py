@@ -6,11 +6,18 @@ def get_key_from_value(d,value):
     return [k for k,v in d.items() if v == value][0]
 
 def get_list_of_divisors(num):
-    lst_divisors = [n for n in range(1,num) if num%n == 0]
+    lst_divisors = [n for n in range(1,num+1) if num%n == 0]
     return lst_divisors
 
+def isPrime(num):
+    if(len(get_list_of_divisors(num)) == 2): 
+        return True
+    else:
+        return False
 
-# Functions
+
+
+# Questions
 
 def q1(num):
     return 2*num
@@ -149,11 +156,36 @@ def q17(a,b):
     return sum(values)
 
 
+def q18(X,Z):
+
+    if(Z == 1):
+        return X*1
+    else:
+        return X*q18(X,Z-1)
 
 
+def q19(num):
+    div = get_list_of_divisors(num)
+    for divisors in div[::-1]:
+        if(isPrime(divisors)):
+            return divisors
 
 
+def q20(n):
 
-q73()
+    if(n == 1):
+        return n*1
+    else:
+        return n*q20(n-1)
+
+def q21(N):
+    lst = [n for n in range(N) if isPrime(n)]
+    print(lst)
+
+
+def q22(n):
+    for i in range(1,n+1):
+        print(i*'!')
+
 # Test
-print(q17(-1,5))
+print(q22(10))
