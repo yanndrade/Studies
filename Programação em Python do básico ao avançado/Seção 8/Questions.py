@@ -1,4 +1,5 @@
 from math import sqrt
+import time
 
 #Help Functions
 
@@ -187,5 +188,55 @@ def q22(n):
     for i in range(1,n+1):
         print(i*'!')
 
+def q23(n):
+    for i in range(1,2*n):
+        if i > n:
+            print((2*n-i)*'*')
+        else:
+            print(i*'*')
+
+def q24(n):
+    for i in range(1,2*n-1):
+        print((2*n-i+1)*' ' + (2*i-1)*'*'+ (2*n-i+1)*' ')
+
+
+def q25(N):
+    S = 0
+    for i in range(1,N+1):
+        fact = (i**2 + 1)/(i + 3)
+        S += fact
+    return S
+
+def q26_1(n):
+    start = time.time()
+    return sum(range(1,n+1)), start, time.time()
+
+def q26_2(n):
+    start = time.time()
+    S = 0
+    for i in range(1,n+1):
+        S += i
+    return S, start, time.time()
+
+
+def q27(x,n):
+    x = x*3.141593/180
+    S = 0
+    for i in range(n+1):
+        print(f"i {i}")
+        den = ((-1)**i) * ( x**(2*i+1) )
+        print(f"denominador {den}")
+        fact = ( ((-1)**i) * ( x**(2*i+1) ) )/( q20(2*i +1) )
+        print(f" fatorial = {q20(2*i +1)}")
+        S += fact
+        print(f"fact {fact}")
+        
+        print(f"S {S}")
+
+    return S
+ #q20   
+
+
 # Test
-print(q22(10))
+
+print(q27(30,5))
