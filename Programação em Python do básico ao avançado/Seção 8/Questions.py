@@ -15,6 +15,15 @@ def isPrime(num):
         return True
     else:
         return False
+    
+def GCD(a,b):
+    diva = set(get_list_of_divisors(a))
+    divb = set(get_list_of_divisors(b))
+
+    div = diva or divb
+    print(diva)
+    print(divb)
+    print(div)
 
 
 
@@ -174,8 +183,8 @@ def q19(num):
 
 def q20(n):
 
-    if(n == 1):
-        return n*1
+    if(n == 0):
+        return 1
     else:
         return n*q20(n-1)
 
@@ -223,20 +232,44 @@ def q27(x,n):
     x = x*3.141593/180
     S = 0
     for i in range(n+1):
-        print(f"i {i}")
-        den = ((-1)**i) * ( x**(2*i+1) )
-        print(f"denominador {den}")
         fact = ( ((-1)**i) * ( x**(2*i+1) ) )/( q20(2*i +1) )
-        print(f" fatorial = {q20(2*i +1)}")
         S += fact
-        print(f"fact {fact}")
-        
-        print(f"S {S}")
-
     return S
  #q20   
+
+def q28(x,n):
+    x = x*3.141593/180
+    S = 0
+    for i in range(n+1):
+        fact = ( ((-1)**i) * ( x**(2*i) ) )/( q20(2*i) )
+        S += fact
+    return S
+
+def q29(x,n):
+    x = x*3.141593/180
+    S = 0
+    for i in range(n+1):
+        fact = (( x**(2*i+1) ) )/( q20(2*i +1) )
+        S += fact
+    return S
+
+def q30(x,n):
+    x = x*3.141593/180
+    S = 0
+    for i in range(n+1):
+        fact = (( x**(2*i) ) )/( q20(2*i) )
+        S += fact
+    return S
+
+def q31(n):
+    return sum([(1/q20(i)) for i in range(n)])
+
+#def q32(a,b):
+    
 
 
 # Test
 
-print(q27(30,5))
+#print(q31(100))
+
+GCD(36,60)
