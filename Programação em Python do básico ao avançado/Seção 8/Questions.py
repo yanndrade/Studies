@@ -20,10 +20,8 @@ def GCD(a,b):
     diva = set(get_list_of_divisors(a))
     divb = set(get_list_of_divisors(b))
 
-    div = diva or divb
-    print(diva)
-    print(divb)
-    print(div)
+    div = diva & divb
+    return max(list(div))
 
 
 
@@ -264,12 +262,43 @@ def q30(x,n):
 def q31(n):
     return sum([(1/q20(i)) for i in range(n)])
 
-#def q32(a,b):
-    
+def q32(a,b):
+    fact = GCD(a,b)
+    print(f"{a}/{b} -> {int(a/fact)}/{int(b/fact)}")
 
+def q33(n):
+    fact = q20(n)
+    s = 0
+    for alg in str(fact):
+        s += int(alg)
+    return s
+    
+def q34(n):
+    prod = 1
+    for i in range(1,n+1):
+        if(i%2 != 0):
+            prod *= i
+    return prod
+
+def q35(n):
+    return q20(2*n)/q20(n) 
+
+def q36(n):
+    prod = 1
+    for i in range(1,n+1):
+        prod *= q20(i)
+    return prod
+
+def q37(n):
+    prod = 1
+    for i in range(1,n+1):
+        prod *= q18(i,i)
+    return prod
+
+def q38(n):
+    return n**(q20(n-1))
 
 # Test
 
-#print(q31(100))
+print(q37(3))
 
-GCD(36,60)
