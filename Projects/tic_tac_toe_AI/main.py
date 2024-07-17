@@ -1,6 +1,5 @@
-
-
 import numpy as np
+from random import randint
 
 def create_game_board():
     board = np.array([[' ']*3 for _ in range(3)])
@@ -14,9 +13,9 @@ def print_game_board(board):
 def move(player, row, col, board):
     if board[row][col]!=' ':
         print("Invalid move! Please choose an empty space.")
-        return board
+        return (board,False)
     board[row][col] = player
-    return board
+    return (board,True)
 
 def check_rows(board: np.array):
     for i,row in enumerate(board):
@@ -59,22 +58,57 @@ def check_diagonal(board):
     return False
 
 
+def check_tie(board):
+    board.flatten()
+    if ' ' not in board:
+        print("Its a tie game")
+        return True
+    else: return False
+
+def check_win(board):
+    diag = check_diagonal(board)
+    col = check_columns(board)
+    row = check_rows(board)
+    if diag == col == row == False:
+        return False
+    else: return True
 
 
-def check_win(board): ...
 
+"""board = create_game_board()
 
+print_game_board(board)
+
+board = move('O',0,2,board)
+check_rows(board)
+board = move('O',1,1,board)
+check_rows(board)
+board = move('O',2,0,board)
+print_game_board(board)
+# check_rows(board)
+# check_columns(board)
+# check_diagonal(board)
+
+check_win(board)
+
+"""
 
 board = create_game_board()
+while True:
+    check = False
+    while not check:
+        board,check = move('O',randint(0,2),randint(0,2),board)
+    print("O JOGOU")
+    print_game_board(board)
+    if check_win(board) or check_tie(board):
+        break
+    check = False
+    while not check:
+        board,check = move('X',randint(0,2),randint(0,2),board)
+    print("X JOGOU")
+    print_game_board(board)
+    if check_win(board) or check_tie(board):
+        break
 
 print_game_board(board)
 
-board = move('X',0,2,board)
-check_rows(board)
-board = move('X',1,1,board)
-check_rows(board)
-board = move('X',2,0,board)
-print_game_board(board)
-check_rows(board)
-check_columns(board)
-check_diagonal(board)
