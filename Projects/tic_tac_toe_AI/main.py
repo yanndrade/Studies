@@ -1,114 +1,112 @@
-import numpy as np
-from random import randint
+from game import *
+from ai_player import *
+import json
 
-def create_game_board():
-    board = np.array([[' ']*3 for _ in range(3)])
-    return board
-
-def print_game_board(board):
-    for row in board:
-        print('|'.join(row))
-        print('-' * 5)
-
-def move(player, row, col, board):
-    if board[row][col]!=' ':
-        print("Invalid move! Please choose an empty space.")
-        return (board,False)
-    board[row][col] = player
-    return (board,True)
-
-def check_rows(board: np.array):
-    for i,row in enumerate(board):
-        valcount = np.unique(row, return_counts=True)
-        for val, count in zip(valcount[0],valcount[1]):
-            if count == 3 and val != ' ':
-                print(f"Vencedor: {val}, completou a row: {i}")
-                return (True,val,i)
-        
-    return False
-
-        
-
-def check_columns(board):
-    board = board.T
-    for i,row in enumerate(board):
-        valcount = np.unique(row, return_counts=True)
-        for val, count in zip(valcount[0],valcount[1]):
-            if count == 3 and val != ' ':
-                print(f"Vencedor: {val}, completou a column: {i}")
-                return (True,val,i)
-        
-    return False
-
-def check_diagonal(board):
-    diag1 = [board[0][0],board[1][1],board[2][2]]
-    valcount = np.unique(diag1, return_counts=True)
-    for val, count in zip(valcount[0],valcount[1]):
-        if count == 3 and val != ' ':
-            print(f"Vencedor: {val}, completou a diagonal: {1}")
-            return (True,val,1)
-        
-    diag2 = [board[0][2],board[1][1],board[2][0]]
-    valcount = np.unique(diag2, return_counts=True)
-    for val, count in zip(valcount[0],valcount[1]):
-        if count == 3 and val != ' ':
-            print(f"Vencedor: {val}, completou a diagonal: {2}")
-            return (True,val,2)
-        
-    return False
-
-
-def check_tie(board):
-    board.flatten()
-    if ' ' not in board:
-        print("Its a tie game")
-        return True
-    else: return False
-
-def check_win(board):
-    diag = check_diagonal(board)
-    col = check_columns(board)
-    row = check_rows(board)
-    if diag == col == row == False:
-        return False
-    else: return True
-
-
-
-"""board = create_game_board()
-
-print_game_board(board)
-
-board = move('O',0,2,board)
-check_rows(board)
-board = move('O',1,1,board)
-check_rows(board)
-board = move('O',2,0,board)
-print_game_board(board)
-# check_rows(board)
-# check_columns(board)
-# check_diagonal(board)
-
-check_win(board)
-
-"""
 
 board = create_game_board()
-while True:
-    check = False
-    while not check:
-        board,check = move('O',randint(0,2),randint(0,2),board)
-    print("O JOGOU")
-    print_game_board(board)
-    if check_win(board) or check_tie(board):
-        break
-    check = False
-    while not check:
-        board,check = move('X',randint(0,2),randint(0,2),board)
-    print("X JOGOU")
-    print_game_board(board)
-    if check_win(board) or check_tie(board):
-        break
+q_table = defaultdict(lambda: np.zeros(9))
 
-print_game_board(board)
+
+
+
+reward = None
+
+result = {
+    'X': 0,
+    'O': 0,
+    'Draw': 0
+}
+
+print("Qtable antes")
+print(q_table)
+
+winner = None
+
+q_table = defaultdict(lambda: np.zeros(9))
+result = {
+    'X': 0,
+    'O': 0,
+    'Draw': 0
+}
+
+
+for n in range(100):
+    board = create_game_board()
+    reward = None
+    winner = None
+
+    HISTORY_STATES_ACTION=[]
+    HISTORY_ACTION=[]
+    HISTORY_AFTER_MOVE_STATES = []
+
+    while True:
+        X_player_possible_moves = get_possible_moves(board)
+        X_move = random_move(X_player_possible_moves)
+        board, _ = move('X',X_move,board)
+
+        print("X Played")
+        print_game_board(board)
+        if check_win(board) or check_tie(board):
+            if check_tie(board):
+                reward = DRAW
+                winner = 'Draw'
+            else:
+                reward = LOST
+                winner = 'X'
+            break
+        
+
+        O_move,act_state = ai_play(board,q_table)
+        HISTORY_STATES_ACTION.append(act_state)
+        HISTORY_ACTION.append(O_move) 
+        board, _ = move('O',O_move,board)
+        state_after_move = get_board_state(board)
+        HISTORY_AFTER_MOVE_STATES.append(state_after_move)
+
+        print("O Played")
+        print_game_board(board)
+
+        if check_win(board) or check_tie(board):
+            if check_tie(board):
+                reward = DRAW
+                winner = 'Draw'
+            else:
+                reward = WIN
+                winner = 'O'
+            break
+        
+    history = {
+    "states_action": HISTORY_STATES_ACTION,
+    "actions": HISTORY_ACTION,
+    "state_after_movie": HISTORY_AFTER_MOVE_STATES}
+
+    print(history['actions'])
+    print(history['states_action'])
+
+    result[winner] += 1
+    print(f"Reward AI: {reward}")
+    q_table = update_q_table(history, reward,q_table)
+     
+
+print(q_table)
+
+
+
+print(result)
+
+for k,v in q_table.items():
+    v = list(v)
+with open('result.json', 'w') as fp:
+    json.dump(result, fp)
+    print("DEU CERTO SALVAR RESULTADOS")
+    print(q_table)
+
+with open('qtable.json', 'w') as fp:
+    json.dump(q_table, fp)
+    print("DEU CERTO SALVAR")
+    
+
+
+
+
 
